@@ -14,3 +14,6 @@ PDAL
 [![Conda](https://github.com/PDAL/PDAL/workflows/Conda/badge.svg)](https://github.com/PDAL/PDAL/actions?query=workflow%3AConda)
 
 See https://pdal.io/ for more info
+
+## VR2P
+This is a fork from genuine pdal repository to add the Riegel RXP driver to the build.

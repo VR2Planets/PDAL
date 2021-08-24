@@ -2,7 +2,8 @@ FROM pdal/ubuntubase:latest as build
 MAINTAINER Andrew Bell <andrew@hobu.co>
 
 SHELL ["conda", "run", "-n", "pdal", "/bin/bash", "-c"]
-
+COPY rivlib-2_5_9-x86_64-linux-gcc9 /usr/local/rivlib-2_5_9-x86_64-linux-gcc9
+ENV RiVLib_DIR /usr/local/rivlib-2_5_9-x86_64-linux-gcc9
 RUN git clone http://github.com/PDAL/PDAL.git pdal && \
     mkdir -p pdal/build && \
     cd pdal/build  && \
@@ -17,10 +18,11 @@ RUN git clone http://github.com/PDAL/PDAL.git pdal && \
         -DBUILD_PLUGIN_HDF=ON \
         -DBUILD_PLUGIN_TILEDB=ON \
         -DBUILD_PLUGIN_E57=ON \
+        -DBUILD_PLUGIN_RIVLIB=ON \
         -DBUILD_PGPOINTCLOUD_TESTS=OFF \
         -DWITH_LAZPERF=ON \
         -DWITH_ZSTD=ON \
-        -DWITH_LASZIP=ON \
+        -DWITH_LASZIP=ON \        
         ..
 
 RUN cd pdal/build  && \
@@ -42,7 +44,8 @@ FROM continuumio/miniconda3
 
 ENV CONDAENV "/opt/conda/envs/pdal"
 COPY --from=build /venv "/opt/conda/envs/pdal"
-
+COPY rivlib-2_5_9-x86_64-linux-gcc9 /usr/local/rivlib-2_5_9-x86_64-linux-gcc9
+ENV RiVLib_DIR=/usr/local/rivlib-2_5_9-x86_64-linux-gcc9
 ENV PROJ_NETWORK=TRUE
 ENV PATH $PATH:${CONDAENV}/bin
 ENV DTED_APPLY_PIXEL_IS_POINT=TRUE
